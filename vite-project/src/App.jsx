@@ -1,12 +1,16 @@
 import { useState } from 'react'
 
-import './App.css'
+import Header from './Component/Header/Header.jsx'
+import CarouselEffect from './Component/Carousel/CarouselEffect.jsx'
 
 function App() {
   
 
   return (
-    <div>amazon clone</div>
+    <div>
+      <Header/>
+      <CarouselEffect/>
+    </div>
   )
 }
 
