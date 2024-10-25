@@ -14,7 +14,7 @@ function CarouselEffect() {
        >
          {
             images.map((ImagesItem)=>{
-                return <img src={ImagesItem}/>
+                return <img key={ImagesItem.id} src={ImagesItem}/>
             })
          }
        </Carousel>

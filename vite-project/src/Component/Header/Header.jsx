@@ -1,19 +1,31 @@
-import React from "react";
+import React, { useContext } from "react";
 import logo from "../../Assets/images/logo.png"
 import { IoSearch } from "react-icons/io5";
 import { TiLocationOutline } from "react-icons/ti";
+import { Link } from "react-router-dom";
 import { BsCart3 } from "react-icons/bs";
 import classes from "../Header/header.module.css"
 import Lowerheader from "./LowerHeader.jsx";
+import { DataContext } from "../DataProvider/DataProvider.jsx";
+import { auth } from "../../Utility/firebase.js";
 
 function Header() {
-  return <section>
+
+  const [{basket, user}, dispatch] = useContext(DataContext);
+  
+  // Safely get basket count
+  
+  const totalItems = basket.reduce((total, item) => total + (item.amount || 1), 0);
+  
+
+  
+  return <section className={classes.fixed}>
     <div className={classes.header_container}>
       <div className={classes.logo_container}>
         {/* logo */}
-        <a href="">
+        <Link to="/">
           <img src="https://pngimg.com/uploads/amazon/amazon_PNG11.png" alt="amazone logo" />
-        </a>
+        </Link>
         <div className={classes.delivery}>
         <span>
           {/* icon */}
@@ -32,34 +44,37 @@ function Header() {
         </select>
         <input type="text" />
         {/* icon */}
-        <IoSearch size={25}/>
+        <IoSearch size={35}/>
       </div>
       {/* right side link */}
       <div className={classes.order_container}>
-        <a href="" className={classes.language}>
+        <Link to="" className={classes.language}>
           <img src={logo} alt="" />
           <select>
             <option value="">EN</option>
           </select>
-          </a>
+          </Link>
         {/* three components */}
-        <a href="">
+        <Link to={!user &&"/auth"}>
           <div>
-            <p>Sign In</p>
-            <span>Account & Lists</span>
+            {
+              user?(<><p style={{fontSize:15}}>hello {user?.email?.split('@')[0]}</p> <span onClick={()=>auth.signOut()}>Sign Out</span> </>):(<><p>Sign In</p><span >Account & Lists</span></>)
+            }
+            
+            
           </div>
-          </a>
+          </Link>
         {/* orders */}
-        <a href="">
-          <p>returns</p>
+        <Link to="/orders" style={{marginLeft: '20px'}}>
+          <p style={{fontSize: '15px'}}>returns</p>
           <span>& Orders</span>
-        </a>
+        </Link>
         {/* cart */}
-        <a href="" className={classes.cart}>
+        <Link to="/cart" className={classes.cart} style={{ marginLeft: '30px' }}>
         {/* icon */}
         <BsCart3 size={35}/>
-        <span>0</span>
-        </a>
+        <span>{totalItems}</span>
+        </Link>
       </div>
       </div>
       <Lowerheader/>
